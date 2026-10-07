@@ -1,0 +1,43 @@
+{
+  "reference": "https://yamatorestaurant.hu/en/",
+  "inspectedAt": "2026-10-06",
+  "viewports": ["1440x900", "1024x768", "820x1180", "390x844", "360x800"],
+  "verifiedFromReference": [
+    {
+      "id": "header-booking",
+      "note": "Persistent header with logo, orange menu control, orange Booking CTA over photographic hero panels."
+    },
+    {
+      "id": "vertical-mode-panels",
+      "note": "Four full-height vertical photo panels; active panel bright with title + Read more; inactive panels dimmed."
+    },
+    {
+      "id": "experience-first-rhythm",
+      "note": "Dining modes appear before dense menu browsing; food photography is experiential and shared-table oriented."
+    },
+    {
+      "id": "orange-black-system",
+      "note": "Reference uses black surfaces and strong orange accents — not copied into Café 1809 palette."
+    }
+  ],
+  "referenceInspired": [
+    "experienceModes",
+    "featuredShowcase",
+    "culinaryJourney",
+    "signatureBrunchStory",
+    "interactiveExperiences",
+    "menuDiscovery",
+    "giftMembership",
+    "reservationVisit",
+    "cinematicFooter"
+  ],
+  "newModernEnhancement": [
+    "namedImageFrameSystem",
+    "sceneTransitionsSeams",
+    "motionDebuggerQueryParam",
+    "customSplitTextUtility",
+    "uberEatsMenuDisclaimer",
+    "reducedMotionMatchMedia"
+  ],
+  "timingDisclaimer": "No easing or duration values in this project are claimed as measured Yamato source values. Defaults live in lib/motionConfig.js."
+}
