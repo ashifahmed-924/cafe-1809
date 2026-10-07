@@ -111,7 +111,7 @@ export default function FeaturedShowcase() {
               </Button>
             </div>
 
-            <div className="mt-10 flex items-center gap-5 max-md:justify-center">
+            <div className="mt-10 flex w-full flex-wrap items-center gap-5 max-md:flex-col max-md:justify-center md:justify-start">
               <div className="flex gap-2">
                 <button type="button" aria-label="Previous dish" onClick={() => go(idx - 1)} className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-ink transition hover:bg-ink hover:text-rice">
                   <ChevronLeft size={20} aria-hidden="true" />
@@ -120,7 +120,7 @@ export default function FeaturedShowcase() {
                   <ChevronRight size={20} aria-hidden="true" />
                 </button>
               </div>
-              <ul data-thumbs className="flex gap-2">
+              <ul data-thumbs className="flex flex-wrap justify-center gap-2">
                 {dishes.map((d, i) => (
                   <li key={d.id}>
                     <button

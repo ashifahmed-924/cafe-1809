@@ -11,7 +11,7 @@ import { moneyShort, img, video } from '@/lib/format';
 
 const marqueeNames = menuItems.filter((m) => !m.addon && m.category !== 'sides').map((m) => m.name);
 
-/** 02 FusionHero — lively restaurant video backdrop + aperture frame, masked headline, menu ticker. */
+/** 02 FusionHero — café ambience video backdrop + aperture frame, masked headline, menu ticker. */
 export default function FusionHero() {
   const ref = useRef(null);
   const videoRef = useRef(null);
@@ -121,7 +121,7 @@ export default function FusionHero() {
             disablePictureInPicture
             disableRemotePlayback
           >
-            <source src={video('hero-restaurant')} type="video/mp4" />
+            <source src={video('hero-cafe')} type="video/mp4" />
           </video>
         </div>
         <div className="hero-video-veil" />

@@ -45,11 +45,11 @@ These are **representative** images, not photographs of Café 1809 or its exact 
 
 ## Video
 
-| File | Pexels ID | Description |
-| --- | ---: | --- |
-| `public/videos/hero-restaurant.mp4` | 3141207 | Lively restaurant / café dining ambience for the homepage hero backdrop (720p local MP4) |
+| File | Source | Description |
+| --- | --- | --- |
+| `public/videos/hero-cafe.mp4` | [Mixkit 3577](https://mixkit.co/free-stock-video/coffee-and-steam-machine-in-a-coffee-shop-3577/) | Barista / espresso machine in a coffee shop — homepage hero backdrop (720p local MP4) |
 
-Referenced via `video('hero-restaurant')` in `lib/format.js`. Autoplay is muted + looped; paused when off-screen, tab-hidden, or `prefers-reduced-motion: reduce` (static poster `hero-dining.webp` remains).
+Referenced via `video('hero-cafe')` in `lib/format.js`. Autoplay is muted + looped; paused when off-screen, tab-hidden, or `prefers-reduced-motion: reduce` (static poster `hero-dining.webp` remains).
 
 ## Reprocessing
 

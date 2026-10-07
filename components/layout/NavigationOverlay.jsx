@@ -8,19 +8,25 @@ import { navLinks } from './navLinks';
 
 const FOCUSABLE = 'a[href],button:not([disabled])';
 const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const ORIGIN = 'circle(0% at calc(100% - 3rem) 2.5rem)';
+const OPEN = 'circle(150% at calc(100% - 3rem) 2.5rem)';
 
 /** Full-screen navigation. Circular clip-path reveal from the toggle corner. */
 export default function NavigationOverlay({ onClosed }) {
   const root = useRef(null);
   const closing = useRef(false);
+  const timeline = useRef(null);
 
   const close = useCallback((target) => {
     if (closing.current) return;
     closing.current = true;
     const t = typeof target === 'string' ? target : undefined;
-    if (reduced()) return onClosed(t);
-    gsap.to(root.current, {
-      clipPath: 'circle(0% at calc(100% - 3rem) 2.5rem)',
+    const el = root.current;
+    timeline.current?.kill();
+    timeline.current = null;
+    if (reduced() || !el) return onClosed(t);
+    gsap.to(el, {
+      clipPath: ORIGIN,
       duration: DURATION.base,
       ease: EASE.inOutStrong,
       onComplete: () => onClosed(t),
@@ -30,20 +36,36 @@ export default function NavigationOverlay({ onClosed }) {
 
   useEffect(() => {
     const el = root.current;
+    if (!el) return undefined;
     const previous = document.activeElement;
     const prevOverflow = document.body.style.overflow;
+    const items = el.querySelectorAll('[data-nav-item]');
+    const meta = el.querySelectorAll('[data-nav-meta]');
     document.body.style.overflow = 'hidden';
     el.querySelector(FOCUSABLE)?.focus({ preventScroll: true });
 
     if (!reduced()) {
+      // fromTo (not from) so React Strict Mode remounts cannot inherit a stuck yPercent
+      // from a killed tween and treat that as the animation's end state.
       const tl = gsap.timeline();
+      timeline.current = tl;
       tl.fromTo(
         el,
-        { clipPath: 'circle(0% at calc(100% - 3rem) 2.5rem)' },
-        { clipPath: 'circle(150% at calc(100% - 3rem) 2.5rem)', duration: DURATION.slow, ease: EASE.inOutStrong, clearProps: 'clipPath' }
+        { clipPath: ORIGIN },
+        { clipPath: OPEN, duration: DURATION.slow, ease: EASE.inOutStrong, clearProps: 'clipPath' }
       );
-      tl.from('[data-nav-item]', { yPercent: 110, duration: DURATION.slow, stagger: STAGGER.line, ease: EASE.outStrong }, '-=0.55');
-      tl.from('[data-nav-meta]', { y: 20, opacity: 0, duration: DURATION.base, stagger: 0.08 }, '-=0.6');
+      tl.fromTo(
+        items,
+        { yPercent: 110 },
+        { yPercent: 0, duration: DURATION.slow, stagger: STAGGER.line, ease: EASE.outStrong, clearProps: 'transform' },
+        '-=0.55'
+      );
+      tl.fromTo(
+        meta,
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: DURATION.base, stagger: 0.08, clearProps: 'transform,opacity' },
+        '-=0.6'
+      );
     }
 
     const onKey = (e) => {
@@ -66,7 +88,10 @@ export default function NavigationOverlay({ onClosed }) {
       document.removeEventListener('keydown', onKey);
       document.body.style.overflow = prevOverflow;
       previous?.focus?.({ preventScroll: true });
-      gsap.killTweensOf(el);
+      timeline.current?.kill();
+      timeline.current = null;
+      gsap.killTweensOf([el, ...items, ...meta]);
+      gsap.set([el, ...items, ...meta], { clearProps: 'clipPath,transform,opacity' });
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -78,7 +103,7 @@ export default function NavigationOverlay({ onClosed }) {
       role="dialog"
       aria-modal="true"
       aria-label="Site navigation"
-      className="scene theme-ink fixed inset-0 z-[110] overflow-y-auto"
+      className="scene theme-ink !fixed inset-0 z-[110] overflow-y-auto"
     >
       <div className="container-shell flex min-h-full flex-col pb-10 pt-[calc(var(--header-h)+1rem)]">
         <button
